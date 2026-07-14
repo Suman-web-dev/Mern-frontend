@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Search, Phone, ChevronDown, Menu, X, Send } from "lucide-react";
-import { cn } from "@/lib/utils";
 
 export default function Navbar() {
   const router = useRouter();

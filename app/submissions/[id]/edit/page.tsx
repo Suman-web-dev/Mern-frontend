@@ -1,30 +1,19 @@
 'use client';
 
 import { useRouter, useParams } from 'next/navigation';
-import { useGetSubmissionQuery, useUpdateSubmissionMutation } from '@/store/api/submissionApi';
+import { useGetSubmissionQuery } from '@/store/api/submissionApi';
 import { useToastErrorHandler } from '@/lib/hooks';
-import { toast } from 'sonner';
 
 export default function EditSubmissionPage() {
   const router = useRouter();
   const params = useParams();
   const id = params.id as string;
-  
+
   const { data: submission, isLoading, error } = useGetSubmissionQuery(id);
-  const [updateSubmission, { isLoading: isUpdating }] = useUpdateSubmissionMutation();
 
   useToastErrorHandler(error, 'Failed to load submission');
 
-  const handleUpdate = async () => {
-    try {
-      // For now, redirect to view page with a message
-      // In a full implementation, this would be a form to edit the submission
-      toast.info('Edit functionality will be implemented with the form component');
-      router.push(`/submissions/${id}`);
-    } catch (err) {
-      toast.error('Failed to update submission');
-    }
-  };
+
 
   if (isLoading) {
     return (
@@ -54,24 +43,18 @@ export default function EditSubmissionPage() {
           >
             ← Back to Submission
           </button>
-          <button
-            onClick={handleUpdate}
-            disabled={isUpdating}
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium"
-          >
-            {isUpdating ? 'Updating...' : 'Update Submission'}
-          </button>
+
         </div>
 
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Edit Submission</h1>
-          
+
           <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 mb-6">
             <h2 className="text-lg font-semibold text-yellow-800 mb-2">
               Edit Mode Coming Soon
             </h2>
             <p className="text-yellow-700">
-              The full edit functionality will be integrated with the submission form component. 
+              The full edit functionality will be integrated with the submission form component.
               For now, you can view the submission details and delete if needed.
             </p>
             <div className="mt-4">

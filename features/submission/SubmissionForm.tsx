@@ -29,8 +29,7 @@ import HelpCard from "@/components/sidebar/HelpCard";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { useSubmitAbstractMutation, useSaveDraftMutation } from "@/store/api/submissionApi";
 import {
-  updateField,
-  updateFields,
+  
   addCoAuthor,
   removeCoAuthor,
   updateCoAuthor,
@@ -38,9 +37,9 @@ import {
   removeUploadedFile,
   resetForm,
   clearError,
-  setSuccess,
   setSubmitting,
   setSavingDraft,
+  setSuccess,
 } from "@/store/slices/submissionSlice";
 
 const journalOptions = [
@@ -99,11 +98,8 @@ export default function SubmissionForm() {
   const router = useRouter();
   
   const dispatch = useAppDispatch();
-  const formData = useAppSelector((state) => state.submission.formData);
   const isSubmittingRedux = useAppSelector((state) => state.submission.isSubmitting);
   const isSavingDraftRedux = useAppSelector((state) => state.submission.isSavingDraft);
-  const error = useAppSelector((state) => state.submission.error);
-  const success = useAppSelector((state) => state.submission.success);
 
   const [submitAbstract, { isLoading: isSubmittingApi }] = useSubmitAbstractMutation();
   const [saveDraft, { isLoading: isSavingDraftApi }] = useSaveDraftMutation();
@@ -125,7 +121,7 @@ export default function SubmissionForm() {
   const validateFiles = () => {
     const errors: { abstract?: string; fullPaper?: string } = {};
     if (!uploadedFiles.abstract) errors.abstract = "Abstract file is required";
-    if (!uploadedFiles.fullPaper) errors.fullPaper = "Consent / Copyright form is required";
+    if (!uploadedFiles.fullPaper) errors.fullPaper = "Consent form is required";
     setUploadErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -163,9 +159,7 @@ export default function SubmissionForm() {
   });
 
   const abstractValue = watch("abstract", "");
-  const consentToPublish = watch("consentToPublish", false);
-  const consentToDataProcessing = watch("consentToDataProcessing", false);
-  const confirmAvailability = watch("confirmAvailability", false);
+
 
   const getWordCount = (text: string) => {
     const cleanText = text.replace(/<[^>]*>/g, " ").trim();
