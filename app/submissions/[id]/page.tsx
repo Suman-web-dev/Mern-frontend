@@ -36,22 +36,22 @@ export default function SubmissionDetailPage() {
   return (
     <main className="min-h-screen">
       <Navbar />
-      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 py-12 px-4">
+      <div className="bg-gradient-to-br from-blue-50 to-indigo-100 py-6 sm:py-12 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
+          <div className="mb-6 sm:mb-8">
             <button
               onClick={() => router.push('/submissions')}
-              className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md font-medium"
+              className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md font-medium text-sm sm:text-base w-full sm:w-auto"
             >
               ← Back to Submissions
             </button>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
-            <div className="flex items-center gap-3 mb-6">
-              <h1 className="text-3xl font-bold text-gray-900">{sub.journal}</h1>
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 sm:p-6 md:p-8">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-3 mb-4 sm:mb-6">
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">{sub.journal}</h1>
               <span
-                className={`px-3 py-1 rounded-full text-sm font-medium ${
+                className={`px-3 py-1 rounded-full text-xs sm:text-sm font-medium ${
                   sub.status === 'draft'
                     ? 'bg-yellow-100 text-yellow-800'
                     : sub.status === 'submitted'
@@ -63,10 +63,10 @@ export default function SubmissionDetailPage() {
               </span>
             </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4 sm:space-y-6">
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Abstract Information</h2>
-              <div className="grid grid-cols-2 gap-4 text-gray-700">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Abstract Information</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-gray-700 text-sm sm:text-base">
                 <div>
                   <span className="font-medium">Journal:</span> {sub.journal}
                 </div>
@@ -89,8 +89,8 @@ export default function SubmissionDetailPage() {
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Presenter Details</h2>
-              <div className="grid grid-cols-2 gap-4 text-gray-700">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Presenter Details</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 text-gray-700 text-sm sm:text-base">
                 <div>
                   <span className="font-medium">Name:</span> {sub.presenter?.name}
                 </div>
@@ -110,7 +110,7 @@ export default function SubmissionDetailPage() {
                   <span className="font-medium">Country:</span> {sub.presenter?.country}
                 </div>
                 {sub.presenter?.orcid && (
-                  <div>
+                  <div className="sm:col-span-2">
                     <span className="font-medium">ORCID:</span> {sub.presenter.orcid}
                   </div>
                 )}
@@ -119,11 +119,11 @@ export default function SubmissionDetailPage() {
 
             {sub.coAuthors && sub.coAuthors.length > 0 && (
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">Co-Authors</h2>
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Co-Authors</h2>
                 <div className="space-y-3">
                   {sub.coAuthors.map((author: any, index: number) => (
-                    <div key={author.id || index} className="bg-gray-50 p-4 rounded-lg">
-                      <div className="grid grid-cols-2 gap-2 text-gray-700">
+                    <div key={author.id || index} className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-gray-700 text-sm sm:text-base">
                         <div>
                           <span className="font-medium">Name:</span> {author.name}
                         </div>
@@ -144,35 +144,35 @@ export default function SubmissionDetailPage() {
             )}
 
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Abstract</h2>
-              <p className="text-gray-700 bg-gray-50 p-4 rounded-lg whitespace-pre-wrap">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Abstract</h2>
+              <p className="text-gray-700 bg-gray-50 p-3 sm:p-4 rounded-lg whitespace-pre-wrap text-sm sm:text-base">
                 {sub.abstract}
               </p>
             </div>
 
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Biography</h2>
-              <p className="text-gray-700 bg-gray-50 p-4 rounded-lg whitespace-pre-wrap">
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Biography</h2>
+              <p className="text-gray-700 bg-gray-50 p-3 sm:p-4 rounded-lg whitespace-pre-wrap text-sm sm:text-base">
                 {sub.biography}
               </p>
             </div>
 
             {sub.files && (
               <div>
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">Uploaded Files</h2>
+                <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Uploaded Files</h2>
                 <div className="space-y-2">
                   {sub.files.abstract && (
-                    <div className="bg-gray-50 p-3 rounded-lg text-gray-700">
+                    <div className="bg-gray-50 p-3 rounded-lg text-gray-700 text-sm sm:text-base">
                       <span className="font-medium">Abstract File:</span> {sub.files.abstract.name}
                     </div>
                   )}
                   {sub.files.fullPaper && (
-                    <div className="bg-gray-50 p-3 rounded-lg text-gray-700">
+                    <div className="bg-gray-50 p-3 rounded-lg text-gray-700 text-sm sm:text-base">
                       <span className="font-medium">Full Paper:</span> {sub.files.fullPaper.name}
                     </div>
                   )}
                   {sub.files.supplementary && (
-                    <div className="bg-gray-50 p-3 rounded-lg text-gray-700">
+                    <div className="bg-gray-50 p-3 rounded-lg text-gray-700 text-sm sm:text-base">
                       <span className="font-medium">Supplementary:</span> {sub.files.supplementary.name}
                     </div>
                   )}
@@ -181,21 +181,21 @@ export default function SubmissionDetailPage() {
             )}
 
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-2">Consent Declarations</h2>
+              <h2 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">Consent Declarations</h2>
               <div className="space-y-2">
-                <div className="flex items-center gap-2 text-gray-700">
+                <div className="flex items-center gap-2 text-gray-700 text-sm sm:text-base">
                   <span className={sub.consentToPublish ? 'text-green-600' : 'text-red-600'}>
                     {sub.consentToPublish ? '✓' : '✗'}
                   </span>
                   <span>Consent to Publish</span>
                 </div>
-                <div className="flex items-center gap-2 text-gray-700">
+                <div className="flex items-center gap-2 text-gray-700 text-sm sm:text-base">
                   <span className={sub.consentToDataProcessing ? 'text-green-600' : 'text-red-600'}>
                     {sub.consentToDataProcessing ? '✓' : '✗'}
                   </span>
                   <span>Consent to Data Processing</span>
                 </div>
-                <div className="flex items-center gap-2 text-gray-700">
+                <div className="flex items-center gap-2 text-gray-700 text-sm sm:text-base">
                   <span className={sub.confirmAvailability ? 'text-green-600' : 'text-red-600'}>
                     {sub.confirmAvailability ? '✓' : '✗'}
                   </span>
@@ -204,7 +204,7 @@ export default function SubmissionDetailPage() {
               </div>
             </div>
 
-            <div className="text-sm text-gray-500 pt-4 border-t">
+            <div className="text-xs sm:text-sm text-gray-500 pt-4 border-t">
               <p>Created: {new Date(sub.createdAt|| '').toLocaleString()}</p>
               <p>Updated: {new Date(sub.updatedAt|| '').toLocaleString()}</p>
             </div>
