@@ -108,7 +108,7 @@ export default function Footer() {
               <li className="flex items-start">
                 <MapPin className="w-5 h-5 mr-3 mt-0.5 flex-shrink-0" />
                 <span className="text-white/80">
-                  123 Research Ave, Academic City, AC 12345
+                  123 Research Ave, Academic City, AC 1234
                 </span>
               </li>
               <li className="flex items-center">
