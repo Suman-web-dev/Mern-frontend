@@ -1,4 +1,4 @@
-import { Check } from "lucide-react";
+import { CheckCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface ChecklistItem {
@@ -13,39 +13,29 @@ interface ChecklistCardProps {
 }
 
 export default function ChecklistCard({ items, className }: ChecklistCardProps) {
-  const completedCount = items.filter((i) => i.completed).length;
-
   return (
-    <div className={cn("bg-white rounded-xl shadow-sm border border-gray-200 p-4 mb-6", className)}>
-      {/* Header */}
-      <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-semibold text-gray-900">Abstract Checklist</h3>
-       
-      </div>
-
-      {/* Progress bar */}
-      <div className="w-full h-1 bg-gray-500 rounded-full mb-3 overflow-hidden">
-        <div
-          className="h-full bg-primary-500 rounded-full transition-all duration-300"
-          style={{ width: `${items.length ? (completedCount / items.length) * 100 : 0}%` }}
-        />
-      </div>
+    <div
+      className={cn(
+        "relative overflow-hidden rounded-xl shadow-lg p-4 mb-6 text-white",
+        className
+      )}
+      style={{ background: "linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%)" }}
+    >
+      <h3 className="text-sm font-bold mb-3">Abstract Checklist</h3>
 
       <ul className="space-y-2">
         {items.map((item) => (
-          <li key={item.id} className="flex items-start gap-2">
-            <div
+          <li key={item.id} className="flex items-center gap-2">
+            <CheckCircle2
               className={cn(
-                "w-4 h-4 rounded flex items-center justify-center flex-shrink-0 mt-0.5",
-                item.completed ? "bg-primary-500" : "bg-gray-100 border border-gray-300"
+                "w-3.5 h-3.5 flex-shrink-0",
+                item.completed ? "text-white" : "text-white/40"
               )}
-            >
-              {item.completed && <Check className="w-2.5 h-2.5 text-white" />}
-            </div>
+            />
             <span
               className={cn(
                 "text-xs leading-tight",
-                item.completed ? "text-gray-400 line-through" : "text-gray-600"
+                item.completed ? "text-white/60 line-through" : "text-white/90"
               )}
             >
               {item.text}

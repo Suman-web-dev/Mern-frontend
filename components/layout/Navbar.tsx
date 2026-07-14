@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { Search, Phone, ChevronDown, Menu, X, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export default function Navbar() {
+  const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -42,6 +44,12 @@ export default function Navbar() {
             <a href="#" className="text-gray-700 hover:text-orange-600 font-medium text-sm transition-colors">
               About
             </a>
+            <button
+              onClick={() => router.push('/submissions')}
+              className="text-gray-700 hover:text-orange-600 font-medium text-sm transition-colors"
+            >
+              View Submissions
+            </button>
           </div>
 
           {/* Right Side Icons */}
@@ -100,6 +108,12 @@ export default function Navbar() {
               <a href="#" className="block text-gray-700 hover:text-orange-600 font-medium py-2">
                 About
               </a>
+              <button
+                onClick={() => router.push('/submissions')}
+                className="block text-gray-700 hover:text-orange-600 font-medium py-2 text-left"
+              >
+                View Submissions
+              </button>
               <div className="flex items-center space-x-3 pt-4 border-t border-gray-200">
                 <button className="p-2 text-gray-600 hover:text-orange-600 transition-colors">
                   <Search className="w-5 h-5" />

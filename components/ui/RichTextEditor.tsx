@@ -1,5 +1,6 @@
 import { Bold, Italic, Underline, List, ListOrdered, AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useRef, useEffect } from "react";
 
 interface RichTextEditorProps {
   value: string;
@@ -18,11 +19,15 @@ export default function RichTextEditor({
   maxWords,
   className,
 }: RichTextEditorProps) {
+  const editorRef = useRef<HTMLDivElement>(null);
+  const isInternalChange = useRef(false);
+
   const handleCommand = (command: string, value?: string) => {
     document.execCommand(command, false, value);
   };
 
   const handleInput = (e: React.FormEvent<HTMLDivElement>) => {
+    isInternalChange.current = true;
     const content = e.currentTarget.innerHTML;
     onChange(content);
   };
@@ -31,6 +36,14 @@ export default function RichTextEditor({
     const cleanText = text.replace(/<[^>]*>/g, ' ').trim();
     return cleanText ? cleanText.split(/\s+/).length : 0;
   };
+
+  // Only update innerHTML when value changes externally (not from user typing)
+  useEffect(() => {
+    if (editorRef.current && !isInternalChange.current) {
+      editorRef.current.innerHTML = value;
+    }
+    isInternalChange.current = false;
+  }, [value]);
 
   return (
     <div className={cn("border border-gray-300 rounded-md overflow-hidden", className)}>
@@ -106,10 +119,10 @@ export default function RichTextEditor({
 
       {/* Editor */}
       <div
+        ref={editorRef}
         contentEditable
         onInput={handleInput}
         className="min-h-[200px] p-4 focus:outline-none"
-        dangerouslySetInnerHTML={{ __html: value }}
         suppressContentEditableWarning
       />
 

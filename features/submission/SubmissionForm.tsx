@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
@@ -95,6 +96,9 @@ const checklistItems = [
 ];
 
 export default function SubmissionForm() {
+  // Router for navigation
+  const router = useRouter();
+  
   // Redux hooks for state management
   const dispatch = useAppDispatch();
   const formData = useAppSelector((state) => state.submission.formData);
@@ -330,6 +334,9 @@ export default function SubmissionForm() {
       setCoAuthors([]);
       setUploadedFiles({});
       
+      // Navigate to submissions list
+      router.push('/submissions');
+      
     } catch (error: any) {
       // Handle error - use backend message if available
       console.error('Submission error:', error);
@@ -429,6 +436,9 @@ export default function SubmissionForm() {
       
       // Handle success - use backend message if available
       toast.success(result?.message || "Draft saved successfully!");
+      
+      // Navigate to submissions list
+      router.push('/submissions');
       
     } catch (error: any) {
       // Handle error - use backend message if available
