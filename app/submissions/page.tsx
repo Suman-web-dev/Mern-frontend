@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useGetAllSubmissionsQuery } from '@/store/api/submissionApi';
-import { toast } from 'sonner';
+import { useToastErrorHandler } from '@/lib/hooks';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
@@ -11,23 +10,12 @@ export default function SubmissionsPage() {
   const router = useRouter();
   const { data: submissions, isLoading, error } = useGetAllSubmissionsQuery(undefined);
 
-  // Show error toast when error occurs
-  useEffect(() => {
-    if (error) {
-      // Use setTimeout to avoid calling toast during render
-      setTimeout(() => {
-        toast.error('Failed to load submissions');
-      }, 0);
-    }
-  }, [error]);
+  useToastErrorHandler(error, 'Failed to load submissions');
 
   const handleView = (id: string) => {
     router.push(`/submissions/${id}`);
   };
 
-  const handleEdit = (id: string) => {
-    router.push(`/submissions/${id}/edit`);
-  };
 
   if (isLoading) {
     return (

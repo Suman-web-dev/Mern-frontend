@@ -1,9 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useGetSubmissionQuery } from '@/store/api/submissionApi';
-import { toast } from 'sonner';
+import { useToastErrorHandler } from '@/lib/hooks';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 
@@ -14,14 +13,7 @@ export default function SubmissionDetailPage() {
   
   const { data: submission, isLoading, error } = useGetSubmissionQuery(id);
 
-  useEffect(() => {
-    if (error) {
-      // Use setTimeout to avoid calling toast during render
-      setTimeout(() => {
-        toast.error('Failed to load submission');
-      }, 0);
-    }
-  }, [error]);
+  useToastErrorHandler(error, 'Failed to load submission');
 
   if (isLoading) {
     return (

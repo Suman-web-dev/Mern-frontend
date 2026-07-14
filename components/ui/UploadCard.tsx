@@ -107,25 +107,19 @@ export default function UploadCard({
           </label>
         </div>
       ) : (
-        <div className="border border-gray-200 rounded-lg p-2 flex items-center justify-between bg-gray-50">
-          <div className="flex items-center flex-grow min-w-0">
-            <div className="w-6 h-6 bg-primary-100 rounded-full flex items-center justify-center mr-2 flex-shrink-0">
-              <File className="w-3 h-3 text-primary-700" />
-            </div>
-            <div className="min-w-0">
-              <p className="font-medium text-gray-900 text-[10px] truncate">{uploadedFile.name}</p>
-              <p className="text-[9px] text-gray-500">{formatFileSize(uploadedFile.size)}</p>
-            </div>
+        <div className="border-2 border-dashed border-green-400 rounded-lg p-3 text-center bg-green-50 flex-grow flex flex-col items-center justify-center h-full">
+          <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mb-2">
+            <CheckCircle className="w-5 h-5 text-green-600" />
           </div>
-          <div className="flex items-center space-x-1 flex-shrink-0">
-            <CheckCircle className="w-3 h-3 text-green-500" />
-            <button
-              onClick={onRemove}
-              className="p-1 text-gray-400 hover:text-red-500 transition-colors"
-            >
-              <X className="w-3 h-3" />
-            </button>
-          </div>
+          <p className="font-medium text-gray-900 text-xs mb-1 truncate w-full">{uploadedFile.name}</p>
+          <p className="text-[10px] text-gray-500 mb-2">{formatFileSize(uploadedFile.size)}</p>
+          <button
+            onClick={onRemove}
+            className="text-xs text-red-600 hover:text-red-700 font-medium flex items-center gap-1"
+          >
+            <X className="w-3 h-3" />
+            Remove
+          </button>
         </div>
       )}
     </div>

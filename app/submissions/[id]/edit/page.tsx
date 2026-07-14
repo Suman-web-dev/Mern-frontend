@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useGetSubmissionQuery, useUpdateSubmissionMutation } from '@/store/api/submissionApi';
+import { useToastErrorHandler } from '@/lib/hooks';
 import { toast } from 'sonner';
 
 export default function EditSubmissionPage() {
@@ -13,14 +13,7 @@ export default function EditSubmissionPage() {
   const { data: submission, isLoading, error } = useGetSubmissionQuery(id);
   const [updateSubmission, { isLoading: isUpdating }] = useUpdateSubmissionMutation();
 
-  useEffect(() => {
-    if (error) {
-      // Use setTimeout to avoid calling toast during render
-      setTimeout(() => {
-        toast.error('Failed to load submission');
-      }, 0);
-    }
-  }, [error]);
+  useToastErrorHandler(error, 'Failed to load submission');
 
   const handleUpdate = async () => {
     try {

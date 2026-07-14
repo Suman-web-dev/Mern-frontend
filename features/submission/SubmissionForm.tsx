@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -96,10 +96,8 @@ const checklistItems = [
 ];
 
 export default function SubmissionForm() {
-  // Router for navigation
   const router = useRouter();
   
-  // Redux hooks for state management
   const dispatch = useAppDispatch();
   const formData = useAppSelector((state) => state.submission.formData);
   const isSubmittingRedux = useAppSelector((state) => state.submission.isSubmitting);
@@ -107,11 +105,9 @@ export default function SubmissionForm() {
   const error = useAppSelector((state) => state.submission.error);
   const success = useAppSelector((state) => state.submission.success);
 
-  // RTK Query hooks for API calls
   const [submitAbstract, { isLoading: isSubmittingApi }] = useSubmitAbstractMutation();
   const [saveDraft, { isLoading: isSavingDraftApi }] = useSaveDraftMutation();
 
-  // Local state for compatibility with existing components
   const [coAuthors, setCoAuthors] = useState<CoAuthor[]>([]);
   const [uploadedFiles, setUploadedFiles] = useState<{
     abstract?: UploadedFile;
@@ -119,13 +115,13 @@ export default function SubmissionForm() {
     supplementary?: UploadedFile;
   }>({});
 
-  // File validation errors
   const [uploadErrors, setUploadErrors] = useState<{
     abstract?: string;
     fullPaper?: string;
   }>({});
 
-  // Validate required uploads, returns true if valid
+  const uploadedFileIds = useRef<Set<string>>(new Set());
+
   const validateFiles = () => {
     const errors: { abstract?: string; fullPaper?: string } = {};
     if (!uploadedFiles.abstract) errors.abstract = "Abstract file is required";
@@ -215,22 +211,20 @@ export default function SubmissionForm() {
       url: URL.createObjectURL(file),
     };
     setUploadedFiles({ ...uploadedFiles, [type]: uploadedFile });
-    // Sync with Redux state - only pass metadata, not the File object
     dispatch(updateUploadedFile({ 
       fileType: type as 'abstract' | 'consentForm' | 'supportingFile', 
-      file: null // We don't need to store File in Redux, local state handles it
+      file: null
     }));
-    toast.success(`${file.name} uploaded successfully`);
+    if (!uploadedFileIds.current.has(uploadedFile.id)) {
+      uploadedFileIds.current.add(uploadedFile.id);
+    }
   };
 
   const handleFileRemove = (type: keyof typeof uploadedFiles) => {
     setUploadedFiles({ ...uploadedFiles, [type]: undefined });
-    // Sync with Redux state
     dispatch(removeUploadedFile(type as 'abstract' | 'consentForm' | 'supportingFile'));
-    toast.info("File removed successfully");
   };
 
-  // Block non-numeric characters for phone/number-only inputs
   const handleNumericKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     const allowed = [
       "Backspace", "Delete", "Tab", "Escape", "Enter",
@@ -242,9 +236,7 @@ export default function SubmissionForm() {
     e.preventDefault();
   };
 
-  // Submit abstract to backend using RTK Query
   const onSubmit = async (data: SubmissionFormData) => {
-    // Validate file uploads before proceeding
     if (!validateFiles()) {
       toast.error("Please upload all required documents");
       const uploadSection = document.getElementById("upload-section");
@@ -252,13 +244,8 @@ export default function SubmissionForm() {
       return;
     }
     try {
-      // Set submitting state in Redux
       dispatch(setSubmitting(true));
-      
-      // Log the form data for debugging
-      console.log('Form data from react-hook-form:', data);
-      
-      // Prepare submission data as JSON object - matching backend schema
+
       const submissionData = {
         journal: data.journal || '',
         presentationType: data.presentationType || '',
@@ -271,6 +258,7 @@ export default function SubmissionForm() {
         consentToPublish: data.consentToPublish || false,
         consentToDataProcessing: data.consentToDataProcessing || false,
         confirmAvailability: data.confirmAvailability || false,
+        status: 'submitted',
         
         // Structure presenter as nested object
         presenter: {
@@ -319,43 +307,30 @@ export default function SubmissionForm() {
         },
       };
 
-      // Log the submission data for debugging
-      console.log('Submission data being sent:', submissionData);
-
-      // Call API using RTK Query mutation with JSON
       const result = await submitAbstract(submissionData).unwrap();
-      
-      // Handle success - use backend message if available
+
       dispatch(setSuccess(true));
       toast.success(result?.message || "Abstract submitted successfully!");
-      
-      // Reset form after successful submission
+
       dispatch(resetForm());
       setCoAuthors([]);
       setUploadedFiles({});
       
-      // Navigate to submissions list
       router.push('/submissions');
-      
+
     } catch (error: any) {
-      // Handle error - use backend message if available
-      console.error('Submission error:', error);
       dispatch(setSuccess(false));
       const errorMessage = error?.data?.error || error?.data?.message || error?.message || "Failed to submit abstract. Please try again.";
       toast.error(errorMessage);
     } finally {
-      // Reset submitting state
       dispatch(setSubmitting(false));
     }
   };
 
-  // Save draft to backend using RTK Query
   const handleSaveDraft = async () => {
     try {
-      // Set saving draft state in Redux
       dispatch(setSavingDraft(true));
       
-      // Get current form values
       const currentValues = {
         journal: watch('journal'),
         presentationType: watch('presentationType'),
@@ -431,21 +406,16 @@ export default function SubmissionForm() {
         },
       };
 
-      // Call API using RTK Query mutation with JSON
       const result = await saveDraft(draftData).unwrap();
-      
-      // Handle success - use backend message if available
+
       toast.success(result?.message || "Draft saved successfully!");
-      
-      // Navigate to submissions list
+
       router.push('/submissions');
       
     } catch (error: any) {
-      // Handle error - use backend message if available
       const errorMessage = error?.data?.error || error?.data?.message || error?.message || "Failed to save draft. Please try again.";
       toast.error(errorMessage);
     } finally {
-      // Reset saving draft state
       dispatch(setSavingDraft(false));
     }
   };
