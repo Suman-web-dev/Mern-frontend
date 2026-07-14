@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Search, Phone, ChevronDown, Menu, X, Send } from "lucide-react";
+import { Search, Phone, ChevronDown, Menu, X, Send, BookOpen } from "lucide-react";
 
 export default function Navbar() {
   const router = useRouter();
@@ -14,9 +14,25 @@ export default function Navbar() {
         <div className="flex items-center justify-between h-[72px]">
           {/* Logo */}
           <div className="flex items-center flex-shrink-0 mr-4 min-w-0">
-            <div className="flex flex-col min-w-0">
-              <span className="text-lg sm:text-xl font-bold text-gray-900 truncate">Arcc Journals</span>
-              <span className="text-[10px] sm:text-xs text-gray-600 truncate">Agricultural Research Communication Center</span>
+            {/* Logo Icon */}
+            <div className="flex-shrink-0 mr-3">
+              <div className="w-10 h-10 bg-orange-600 rounded-lg flex items-center justify-center">
+                <BookOpen className="w-6 h-6 text-white" />
+              </div>
+            </div>
+            
+            {/* Brand Name - Stacked in two lines */}
+            <div className="flex flex-col min-w-0 mr-4">
+              <span className="text-lg font-bold text-gray-900 truncate leading-tight">Arcc</span>
+              <span className="text-lg font-bold text-gray-900 truncate leading-tight">Journals</span>
+            </div>
+            
+            {/* Vertical Divider */}
+            <div className="hidden lg:block mx-4 h-10 w-px bg-gray-300 flex-shrink-0" />
+            
+            <div className="hidden lg:flex flex-col min-w-0">
+              <span className="text-xs font-medium text-gray-700 truncate leading-tight">Agricultural Research</span>
+              <span className="text-xs font-medium text-gray-700 truncate leading-tight">Communication Centre</span>
             </div>
           </div>
 
@@ -47,7 +63,7 @@ export default function Navbar() {
               onClick={() => router.push('/submissions')}
               className="text-gray-700 hover:text-orange-600 font-medium text-sm transition-colors"
             >
-              View Submissions
+               Submissions
             </button>
           </div>
 
