@@ -16,6 +16,7 @@ export const submissionApi = createApi({
       return headers;
     },
   }),
+  tagTypes: ['Submission'],
   endpoints: (builder) => ({
     submitAbstract: builder.mutation({
       query: (submissionData) => ({
@@ -23,6 +24,7 @@ export const submissionApi = createApi({
         method: 'POST',
         body: submissionData,
       }),
+      invalidatesTags: ['Submission'],
     }),
     saveDraft: builder.mutation({
       query: (draftData) => ({
@@ -30,21 +32,25 @@ export const submissionApi = createApi({
         method: 'POST',
         body: draftData,
       }),
+      invalidatesTags: ['Submission'],
     }),
     getSubmission: builder.query({
       query: (id) => `/submission/${id}`,
+      providesTags: (result, error, id) => [{ type: 'Submission', id }],
     }),
     getAllSubmissions: builder.query({
       query: (status) => ({
         url: '/submission',
         params: status ? { status } : undefined,
       }),
+      providesTags: ['Submission'],
     }),
     deleteSubmission: builder.mutation({
       query: (id) => ({
         url: `/submission/${id}`,
         method: 'DELETE',
       }),
+      invalidatesTags: ['Submission'],
     }),
     updateSubmission: builder.mutation({
       query: ({ id, formData }) => ({
@@ -52,6 +58,7 @@ export const submissionApi = createApi({
         method: 'PUT',
         body: formData,
       }),
+      invalidatesTags: (result, error, { id }) => [{ type: 'Submission', id }, 'Submission'],
     }),
   }),
 });
